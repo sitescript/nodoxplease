@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NoDoxPlease
-// @namespace    http://hypixel.lol
-// @version      2024-05-28
+// @namespace    https://portfolio.crxaw.tech/NoDoxPlease
+// @version      1.3
 // @description  Removes Google's "Results for" section from search results and your location from the footer of the page.
 // @author       Euro-pol
 // @match        https://www.google.com/search*
@@ -11,33 +11,24 @@
 // ==/UserScript==
 
 (function() {
+    'use strict';
 
-    const elements = ["#taw", "#footcnt", "#oFNiHe"]
+    // Function to remove the specific div
+    function removeDiv() {
+        // Find the div with the specified class
+        const divToRemove = document.querySelector('div.eKPi4.BUSxSd[aria-level="2"][role="heading"]');
 
-    function waitForElm(selector) {
-        return new Promise(resolve => {
-            if (document.querySelector(selector)) {
-                return resolve(document.querySelector(selector));
-            }
-
-            const observer = new MutationObserver(mutations => {
-                if (document.querySelector(selector)) {
-                    observer.disconnect();
-                    resolve(document.querySelector(selector));
-                }
-            });
-
-            observer.observe(document.body, {
-                childList: true,
-                subtree: true
-            });
-        });
+        // If the div is found, remove it
+        if (divToRemove) {
+            divToRemove.remove();
+            console.log('Removed the specified div:', divToRemove);
+        }
     }
 
-    for (const element of elements) {
-        waitForElm(element).then(elm => {
-            elm.remove();
-        });
-    }
+    // Run the function to remove the div
+    removeDiv();
 
+    // Optional: Set up a MutationObserver to watch for changes in the DOM
+    const observer = new MutationObserver(removeDiv);
+    observer.observe(document.body, { childList: true, subtree: true });
 })();
